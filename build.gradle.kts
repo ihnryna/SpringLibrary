@@ -1,3 +1,5 @@
+val testcontainersVersion = "1.19.1"
+
 plugins {
     java
     id("org.springframework.boot") version "4.0.1"
@@ -19,9 +21,16 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-jdbc")
+    runtimeOnly("org.postgresql:postgresql")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("org.springframework.boot:spring-boot-testcontainers:4.0.1")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation ("org.testcontainers:testcontainers")
+    testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion")
+    testImplementation("org.testcontainers:postgresql:$testcontainersVersion")
 }
 
 tasks.withType<Test> {

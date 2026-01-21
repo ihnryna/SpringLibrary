@@ -3,12 +3,12 @@ package ihnryna.springlibrary;
 import ihnryna.springlibrary.model.Book;
 import ihnryna.springlibrary.model.LibraryItem;
 import ihnryna.springlibrary.model.Magazine;
-import ihnryna.springlibrary.repository.LibraryItemDAO;
+import ihnryna.springlibrary.repository.LibraryItemRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.stereotype.Service;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Testcontainers
 @Sql("/schema.sql")
 @Sql("/data.sql")
+@ActiveProfiles("test-sql")
 class LibraryItemJdbcTemplateTest {
 
     @Container
@@ -29,31 +30,29 @@ class LibraryItemJdbcTemplateTest {
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine");
 
     @Autowired
-    private LibraryItemDAO libraryItemDAO;
+    private LibraryItemRepository repository;
 
     @Test
-    void testCountRows() {
-        List<LibraryItem> items = libraryItemDAO.listLibraryItems();
-        assertEquals(4, items.size(), "У базі має бути 4 елементи після data.sql");
+    void testCountAllItems() {
+        int count = repository.countAllItems();
+        assertEquals(4, count);
     }
 
     @Test
-    void testListBookTitles() {
-        List<Book> books = libraryItemDAO.listBooks();
-        assertEquals(2, books.size());
-        assertTrue(books.stream().anyMatch(b -> b.getTitle().equals("Effective Java")));
-        assertTrue(books.stream().anyMatch(b -> b.getTitle().equals("Clean Code")));
+    void testFindItemsPublishedAfter() {
+        List<LibraryItem> recentItems = repository.findItemsPublishedAfter(2010);
+        assertFalse(recentItems.isEmpty());
+        assertEquals(2, recentItems.size());
+        for (LibraryItem item : recentItems) {
+            assertTrue(item.getPublishedYear() > 2010);
+        }
     }
 
     @Test
-    void testInsertLibraryItem() {
-        Magazine mag = new Magazine("Science Weekly", 2025, true, 101, "March");
-        libraryItemDAO.createLibraryItem(mag);
-
-        List<LibraryItem> items = libraryItemDAO.listLibraryItems();
-        assertEquals(5, items.size());
-
-        List<Magazine> magazines = libraryItemDAO.listMagazines();
-        assertTrue(magazines.stream().anyMatch(m -> m.getTitle().equals("Science Weekly")));
+    void testFindAllBookAuthors() {
+        List<String> authors = repository.findAllBookAuthors();
+        assertEquals(2, authors.size());
+        assertTrue(authors.contains("Joshua Bloch"));
+        assertTrue(authors.contains("Robert C. Martin"));
     }
 }

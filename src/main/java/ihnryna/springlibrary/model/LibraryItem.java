@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class LibraryItem {
+public abstract class LibraryItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;

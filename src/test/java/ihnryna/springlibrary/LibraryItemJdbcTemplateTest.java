@@ -20,9 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Testcontainers
-@Sql("/schema.sql")
 @Sql("/data.sql")
-@ActiveProfiles("test-sql")
 class LibraryItemJdbcTemplateTest {
 
     @Container

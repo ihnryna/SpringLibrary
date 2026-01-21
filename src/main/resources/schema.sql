@@ -6,5 +6,6 @@ CREATE TABLE IF NOT EXISTS library_item (
     isbn VARCHAR(20),
     author VARCHAR(255),
     issue_number INT,
-    month VARCHAR(20)
+    month VARCHAR(20),
+    dtype VARCHAR(255)
 );

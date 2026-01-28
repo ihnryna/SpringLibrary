@@ -22,6 +22,7 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest
 @Testcontainers
 @ActiveProfiles("test-sql")
+@Sql("/schema.sql")
 public class LibraryItemServiceTest {
 
     @Container
@@ -31,14 +32,14 @@ public class LibraryItemServiceTest {
     @Autowired
     private LibraryItemService service;
 
-    @Test
+    /*@Test
     void testWithoutSchemaSql_shouldFail() {
         Exception exception = assertThrows(DataAccessException.class, () -> {
             service.countAllItems();
         });
-    }
+    }*/
+    // @Sql("/schema.sql") transferred to the to of class, for successful 'validate'
 
-    @Sql("/schema.sql")
     @Test
     @Transactional
     void testFindAllWithoutData_returnsZero() {

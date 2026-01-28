@@ -1,14 +1,11 @@
 package ihnryna.springlibrary;
 
-import ihnryna.springlibrary.model.Book;
 import ihnryna.springlibrary.model.LibraryItem;
-import ihnryna.springlibrary.model.Magazine;
 import ihnryna.springlibrary.repository.LibraryItemRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -20,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Testcontainers
-@Sql("/data.sql")
+@Sql("/data1.sql")
 class LibraryItemJdbcTemplateTest {
 
     @Container

@@ -9,3 +9,4 @@ CREATE TABLE IF NOT EXISTS library_item (
     month VARCHAR(20),
     dtype VARCHAR(255)
 );
+TRUNCATE TABLE library_item RESTART IDENTITY CASCADE;

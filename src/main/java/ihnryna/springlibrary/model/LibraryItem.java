@@ -1,9 +1,13 @@
 package ihnryna.springlibrary.model;
-
 import jakarta.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@NamedQuery(name = "LibraryItem.deleteByPublishedYearLessThan",
+        query = "DELETE FROM LibraryItem li WHERE li.publishedYear < :year")
+@NamedQuery(name = "LibraryItem.findYearsWithMoreThanNLibraryItems",
+        query = "SELECT DISTINCT c.publishedYear FROM LibraryItem c\n" +
+                "WHERE (SELECT COUNT(li) FROM LibraryItem li WHERE li.publishedYear = c.publishedYear) > :n")
 public abstract class LibraryItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -3,6 +3,17 @@ package ihnryna.springlibrary.model;
 import jakarta.persistence.*;
 
 @Entity
+@NamedQuery(
+        name = "Book.updateAvailableFalseByAuthor",
+        query = "UPDATE Book b SET b.available = false WHERE b.author = :author"
+)
+@NamedQuery(
+        name = "Book.maxYearByAuthor",
+        query = "SELECT b.author, MAX(b.publishedYear) " +
+                "FROM Book b " +
+                "GROUP BY b.author " +
+                "ORDER BY b.author"
+)
 public class Book extends LibraryItem {
 
     private String isbn;

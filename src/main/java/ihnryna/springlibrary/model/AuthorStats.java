@@ -7,6 +7,14 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@NamedQuery(name = "AuthorStats.findAuthorAvailableBooks",
+        query = """
+                SELECT a.authorName, COUNT(DISTINCT (CASE WHEN b.available = true THEN b.id END)) AS availableBooks
+                FROM AuthorStats a
+                LEFT JOIN Book b ON b.author = a.authorName
+                GROUP BY a.authorName
+                ORDER BY a.authorName
+                """)
 public class AuthorStats {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

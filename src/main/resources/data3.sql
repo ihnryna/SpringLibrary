@@ -1,6 +1,6 @@
 TRUNCATE TABLE library_item RESTART IDENTITY CASCADE;
 TRUNCATE TABLE author_stats RESTART IDENTITY CASCADE;
-
+TRUNCATE TABLE reader_account RESTART IDENTITY CASCADE;
 
 INSERT INTO library_item (title, published_year, available, isbn, author, dtype)
 VALUES ('Effective Java', 2018, true, '978-0134685991', 'Joshua Bloch', 'Book'),
@@ -29,3 +29,7 @@ VALUES ('Brian Goetz', 'USA', true, 1, 2006),
        ('Martin Fowler', 'UK', true, 1, 2018),
        ('Robert C. Martin', 'USA', true, 2, 2008),
        ('Thorben Janssen', 'Germany', true, 1, 2018);
+
+
+INSERT INTO reader_account (surname, balance)
+VALUES ('Hryshchenko', 50);

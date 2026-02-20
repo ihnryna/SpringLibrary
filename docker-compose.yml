@@ -1,0 +1,54 @@
+services:
+  primary:
+    image: postgres:16
+    container_name: pg_primary
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: mydb
+
+    ports:
+      - "5433:5432"
+    volumes:
+      - pg_primary_data:/var/lib/postgresql/data
+      - ./db_init:/docker-entrypoint-initdb.d
+    command: >
+      postgres
+      -c wal_level=replica
+      -c max_wal_senders=5
+      -c hot_standby=on
+      -c listen_addresses='*'
+
+
+  replica:
+    image: postgres:16
+    container_name: pg_replica
+    depends_on:
+      - primary
+    environment:
+      POSTGRES_USER: replicator
+      POSTGRES_PASSWORD: replica_pass
+      PGPASSWORD: replica_pass
+    ports:
+      - "5434:5432"
+    volumes:
+      - pg_replica_data:/var/lib/postgresql/data
+    user: postgres
+    command: >
+      bash -c "
+          rm -rf /var/lib/postgresql/data/*
+          chown -R postgres:postgres /var/lib/postgresql/data
+          chmod 700 /var/lib/postgresql/data
+
+          until pg_basebackup -h primary -D /var/lib/postgresql/data -U replicator -Fp -Xs -P -R; do
+            echo 'Waiting for primary...'
+            sleep 1;
+          done;
+
+          postgres -c hot_standby=on
+          "
+
+volumes:
+  pg_primary_data:
+  pg_replica_data:
+

@@ -52,6 +52,7 @@ public class LibraryEntityManagerTxComponent {
 
             LibraryItem book = em.find(LibraryItem.class, bookId);
             book.setAvailable(true);
+
             tx.commit();
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
@@ -72,7 +73,7 @@ public class LibraryEntityManagerTxComponent {
             active = tx.isActive();
             LibraryItem book = em.find(LibraryItem.class, title);
             book.setAvailable(false);
-            // active = tx.isActive();
+            // active = tx.isActive(); //tx.isActive();
             tx.commit();
 
         } catch (Exception e) {

@@ -15,6 +15,12 @@ import lombok.Setter;
                 GROUP BY a.authorName
                 ORDER BY a.authorName
                 """)
+@Table(
+        name = "author_stats",
+        indexes = {
+                @Index(name = "author_name_idx", columnList = "author_name", unique = true)
+        }
+)
 public class AuthorStats {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

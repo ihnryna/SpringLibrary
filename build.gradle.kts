@@ -27,6 +27,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-flyway")
     implementation("org.flywaydb:flyway-database-postgresql")
     implementation ("org.springframework.boot:spring-boot-starter-jooq")
+    implementation ("org.springframework.boot:spring-boot-starter-data-mongodb")
     runtimeOnly("org.postgresql:postgresql")
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("org.postgresql:postgresql")
